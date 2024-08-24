@@ -1,0 +1,19 @@
+.inputField {
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+}
+.inputField input {
+    border: 2px solid rgba(180, 180, 180);
+    border-radius: 5px;
+    font-size: 1.5rem;
+}
+.inputField label {
+    color: rgba(255, 20, 20);
+}
+
+.register button {
+    background-color: rgba(57, 162, 237);
+    margin-top: 20px;
+    color: rgba(255, 255, 255);
+}

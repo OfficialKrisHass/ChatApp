@@ -1,9 +1,27 @@
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import Home from "./Home.js"
+import Register from "./Register.js"
+
+import "./App.css"
 
 function App() {
 
     return (
-        <h1>Chat app</h1>
+        <div className="app">
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={ <Home/> }
+                    />
+                    <Route
+                        path="/register"
+                        element={ <Register/> }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
 
 }
