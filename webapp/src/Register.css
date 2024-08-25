@@ -8,7 +8,7 @@
     border-radius: 5px;
     font-size: 1.5rem;
 }
-.inputField label {
+.errLabel {
     color: rgba(255, 20, 20);
 }
 
