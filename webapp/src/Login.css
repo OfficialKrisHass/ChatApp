@@ -1,3 +1,9 @@
+.login button {
+    background-color: rgba(57, 162, 237);
+    color: rgba(255, 255, 255);
+    margin-top: 20px;
+}
+
 .inputField {
     margin: 10px 0px;
     display: flex;
@@ -8,12 +14,7 @@
     border-radius: 5px;
     font-size: 1.5rem;
 }
+
 .errLabel {
     color: rgba(255, 20, 20);
-}
-
-.register button {
-    background-color: rgba(57, 162, 237);
-    margin-top: 20px;
-    color: rgba(255, 255, 255);
 }

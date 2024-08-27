@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./Register.css"
+import "./Login.css"
 
 let status = 0;
 
-function Register() {
+function Login() {
+
+    const [signingUp, setSigningUp] = useState(false);
 
     const [data, setData] = useState({});
     const [error, setError] = useState({});
@@ -22,18 +24,21 @@ function Register() {
         });
 
     }
-    const register = () => {
 
-        setError(validateData(data));
-        if (status !== 1) return;
+    const onLogin = () => {
+
+        if (signingUp) {
+
+            setError(validateData(data));
+            if (status !== 1) return;
+
+        }
 
         fetch("/api/auth", {
-            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: data.name,
                 email: data.email,
                 password: data.password,
             })
@@ -49,7 +54,6 @@ function Register() {
 
             localStorage.setItem("user", JSON.stringify({
                 token: res.token,
-                name: data.name,
                 email: data.email
             }));
 
@@ -60,13 +64,16 @@ function Register() {
     }
 
     return (
-        <div className="container register">
-            <h1>Register</h1>
+        <div className="container login">
+            <h1>{ signingUp ? "Sign up" : "Sign in" }</h1>
 
-            <div className="inputField">
-                <input type="text" name="name" placeholder="Username" onChange={onChange}/>
-                <label className="errLabel">{ error.type === 1 ? error.msg : "" }</label>
-            </div>
+            { signingUp ? ( 
+                <div className="inputField">
+                    <input type="text" name="name" placeholder="Username" onChange={onChange}/>
+                    <label className="errLabel">{ error.type === 1 ? error.msg : "" }</label>
+                </div>
+            ) : "" }
+
             <div className="inputField">
                 <input type="email" name="email" placeholder="Email" onChange={onChange}/>
                 <label className="errLabel">{ error.type === 2 ? error.msg : "" }</label>
@@ -75,8 +82,9 @@ function Register() {
                 <input type="password" name="password" placeholder="Password" onChange={onChange}/>
                 <label className="errLabel">{ error.type === 3 ? error.msg : "" }</label>
             </div>
+
             <label className="errLabel">{ error.type === 4 ? error.msg : "" }</label>
-            <button onClick={register}>Register</button>
+            <button onClick={onLogin}>{ signingUp ? "Sign up" : "Sign in" }</button>
         </div>
     )
 
@@ -105,4 +113,4 @@ function validateData(data) {
 
 }
 
-export default Register;
+export default Login;

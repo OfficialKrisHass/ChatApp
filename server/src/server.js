@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/auth", async (req, res) => {
 
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     runQuery("SELECT name, email FROM users WHERE email=? OR name=?", [email, name]).then(result => {
 
