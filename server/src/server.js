@@ -25,47 +25,35 @@ app.post("/api/auth", async (req, res) => {
 
     const { email, password } = req.body;
 
-    runQuery("SELECT name, email FROM users WHERE email=? OR name=?", [email, name]).then(result => {
+    runQuery("SELECT email, password FROM users WHERE email=?", [email]).then(result => {
 
-        if (result.length === 0)
-            registerUser();
-        else
-            res.status(400).json({
-                status: -2,
-                msg: "User already registered, please log in."
-            });
+        if (result.length === 0 || !bcrypt.compareSync(password, result[0].password)) {
 
-    });
+            res.status(400).json({ msg: "Invalid credentials" });
+            return;
 
-    const registerUser = () => {
+        }
 
-        runQuery("INSERT INTO users(name, email, password) VALUES(?, ?, ?)", [name, email, bcrypt.hashSync(password, 10)])
-        .then(result => {
+        const token = jwt.sign({
+            email,
+            signInTime: Date.now()
+        }, process.env.JWT_SECRET_KEY);
 
-            const token = jwt.sign({
-                email,
-                signInTime: Date.now(),
-            }, process.env.JWT_SECRET_KEY);
-
-            res.status(200).json({
-                status: 1,
-                msg: "Successfuly registered user",
-                token
-            });
-
-        }).catch((err) => {
-
-            console.error(`An error has occured while trying to register user ${name} with email ${email}: ${err}`);
-            res.status(400).json({
-                status: -1,
-                msg: err
-            });
-
+        res.status(200).json({
+            token,
+            msg: "Successfully logged in"
         });
 
+        return;
 
-    }
+    }).catch(err => {
 
+        console.log(`An error has occured while trying to auth user.\n${err}`);
+        res.status(500).json({ msg: "A server error has occured" });
+
+        return;
+
+    });
 
 })
 
