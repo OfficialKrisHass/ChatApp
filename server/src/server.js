@@ -25,11 +25,13 @@ app.post("/api/auth", async (req, res) => {
 
     const { email, password } = req.body;
 
+    console.log(`${email} ${password}`);
+
     runQuery("SELECT email, password FROM users WHERE email=?", [email]).then(result => {
 
         if (result.length === 0 || !bcrypt.compareSync(password, result[0].password)) {
 
-            res.status(400).json({ msg: "Invalid credentials" });
+            res.status(400).json({ errMsg: "Invalid credentials bozo" });
             return;
 
         }
@@ -49,7 +51,7 @@ app.post("/api/auth", async (req, res) => {
     }).catch(err => {
 
         console.log(`An error has occured while trying to auth user.\n${err}`);
-        res.status(500).json({ msg: "A server error has occured" });
+        res.status(500).json({ errMsg: "A server error has occured" });
 
         return;
 
